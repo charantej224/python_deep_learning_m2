@@ -26,14 +26,14 @@ dataset=dataset.values
 
 X_train, X_test, Y_train, Y_test = train_test_split(dataset[:,2:32], dataset[:,1],
                                                     test_size=0.25, random_state=87)
-np.random.seed(155)
+
 my_first_nn = Sequential() # create model
 my_first_nn.add(Dense(10, input_dim=30, activation='relu'))# hidden layer
 my_first_nn.add(Dense(12, activation='softplus'))
-#my_first_nn.add(Dense(156, activation='sigmoid')) #added one laye
-#my_first_nn.add(Dense(7, activation='sigmoid')) #added another layer
+my_first_nn.add(Dense(156, activation='sigmoid')) #added one laye
+my_first_nn.add(Dense(7, activation='sigmoid')) #added another layer
 my_first_nn.add(Dense(1, activation='sigmoid')) # output layer
-my_first_nn.compile(loss='binary_crossentropy', optimizer='adam')
+my_first_nn.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 my_first_nn_fitted = my_first_nn.fit(X_train, Y_train, epochs=100, verbose=0,
                                      initial_epoch=0)
 print(my_first_nn.summary())
