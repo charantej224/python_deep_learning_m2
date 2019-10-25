@@ -49,11 +49,3 @@ plt.ylabel('accuracy')
 plt.title('model loss')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
-n = 100
-plt.imshow(test_images[100, :, :])
-single_test = test_images[100, :, :]
-single_test = single_test.reshape(1, dimData)
-
-predicted = model.predict(single_test)
-print(predicted)
-plt.imshow(predicted)

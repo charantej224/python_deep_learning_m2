@@ -40,20 +40,3 @@ history = model.fit(train_data, train_labels_one_hot, batch_size=256, epochs=20,
 
 [test_loss, test_acc] = model.evaluate(test_data, test_labels_one_hot)
 print("Evaluation result on Test Data : Loss = {}, accuracy = {}".format(test_loss, test_acc))
-
-# graph
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('accuracy')
-plt.legend(['train', 'validation'], loc='upper left')
-plt.show()
-n = 100
-plt.imshow(test_images[100, :, :])
-single_test = test_images[100, :, :]
-single_test = single_test.reshape(1, dimData)
-
-predicted = model.predict(single_test)
-print(predicted)
-plt.imshow(predicted)
