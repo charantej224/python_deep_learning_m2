@@ -43,10 +43,10 @@ print("Evaluation result on Test Data : Loss = {}, accuracy = {}".format(test_lo
 
 # graph
 plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
+plt.plot(history.history['acc'])
+plt.xlabel('loss')
+plt.ylabel('accuracy')
 plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('accuracy')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 n = 100
