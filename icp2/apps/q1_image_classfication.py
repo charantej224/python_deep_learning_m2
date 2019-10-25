@@ -42,10 +42,10 @@ history = model.fit(train_data, train_labels_one_hot, batch_size=256, epochs=20,
 print("Evaluation result on Test Data : Loss = {}, accuracy = {}".format(test_loss, test_acc))
 
 # graph
-plt.plot(history.history['loss'])
-plt.plot(history.history['acc'])
-plt.xlabel('loss')
-plt.ylabel('accuracy')
+plt.plot(history.history['loss'], color="green")
+plt.plot(history.history['acc'], color="red")
+plt.plot(history.history['val_loss'], color="blue")
+plt.plot(history.history['val_acc'], color="yellow")
 plt.title('model loss')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
