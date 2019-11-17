@@ -1,12 +1,13 @@
 # python_deep_learning_m2
-
+``` 
 curl -X GET \
   http://127.0.0.1:5000/ \
   -H 'Postman-Token: 1f78f028-b6fb-4638-9da1-6cf0bae6f024' \
   -H 'cache-control: no-cache'
-
+```
 Get Single Response for the comment
 
+```
 curl -X POST \
   http://localhost:5000/sentiment-analyse \
   -H 'Accept: */*' \
@@ -22,10 +23,12 @@ curl -X POST \
   -d '{
 	"message": "Just incredible.After a lengthy exchange on the blue Trump holds his nerve to roll it in and then win the frame to go"
 }'
+```
 
 
 Get Multiple Response for the comment
 
+```
 curl -X POST \
   http://localhost:5000/sentiment-analyse-stream \
   -H 'Accept: */*' \
@@ -42,3 +45,4 @@ curl -X POST \
 	"time": "1",
 	"writeFile": "current.txt"
 }'
+```
