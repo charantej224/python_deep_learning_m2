@@ -1,30 +1,19 @@
-import numpy as np  # linear algebra
-import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
-
-from sklearn.feature_extraction.text import CountVectorizer
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from keras.models import Sequential
-from keras.layers import Dense, Embedding, LSTM, SpatialDropout1D
-from sklearn.model_selection import train_test_split
-from keras.utils.np_utils import to_categorical
 import re
 
+import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
+from keras.layers import Dense, Embedding, LSTM, SpatialDropout1D
+from keras.models import Sequential
+from keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.text import Tokenizer
+from keras.utils.np_utils import to_categorical
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 data = pd.read_csv('spam.csv', encoding='ISO-8859-1')
 # Keeping only the neccessary columns
 data = data[['v1', 'v2']]
 
-# data = data[data.sentiment != "Neutral"]
-data['v2'] = data['v2'].apply(lambda x: x.lower())
-data['v2'] = data['v2'].apply((lambda x: re.sub('[^a-zA-z0-9\s]', '', x)))
-
-# print(data[data['sentiment'] == 'Positive'].size)
-# print(data[data['sentiment'] == 'Negative'].size)
-
-for idx, row in data.iterrows():
-    row[0] = row[0].replace('rt', ' ')
+data['v2'] = data['v2'].apply(lambda x: re.sub('[^a-zA-z0-9\s]', '', x.lower()))
 
 max_fatures = 2000
 tokenizer = Tokenizer(num_words=max_fatures, split=' ')
@@ -46,8 +35,6 @@ def createmodel():
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
-
-# print(model.summary())
 
 labelencoder = LabelEncoder()
 integer_encoded = labelencoder.fit_transform(data['v1'])

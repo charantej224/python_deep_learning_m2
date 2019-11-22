@@ -1,5 +1,5 @@
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import numpy as np  # linear algebra
+import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 
 from sklearn.feature_extraction.text import CountVectorizer
 from keras.preprocessing.text import Tokenizer
@@ -14,7 +14,7 @@ from sklearn.preprocessing import LabelEncoder
 
 data = pd.read_csv('Sentiment.csv')
 # Keeping only the neccessary columns
-data = data[['text','sentiment']]
+data = data[['text', 'sentiment']]
 data = data[data.sentiment != 'Neutral']
 
 data = data[data.sentiment != "Neutral"]
@@ -37,27 +37,30 @@ print(X)
 embed_dim = 128
 lstm_out = 196
 
+
 def createmodel():
     model = Sequential()
-    model.add(Embedding(max_fatures, embed_dim,input_length = X.shape[1]))
+    model.add(Embedding(max_fatures, embed_dim, input_length=X.shape[1]))
     model.add(SpatialDropout1D(0.4))
     model.add(LSTM(lstm_out, dropout=0.2, recurrent_dropout=0.2))
-    model.add(Dense(2,activation='softmax'))
-    model.compile(loss = 'categorical_crossentropy', optimizer='adam',metrics = ['accuracy'])
+    model.add(Dense(2, activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     model.save('lstm.h5')
     return model
+
+
 # print(model.summary())
 
 labelencoder = LabelEncoder()
 integer_encoded = labelencoder.fit_transform(data['sentiment'])
 y = to_categorical(integer_encoded)
-X_train, X_test, Y_train, Y_test = train_test_split(X,y, test_size = 0.33, random_state = 42)
-print(X_train.shape,Y_train.shape)
-print(X_test.shape,Y_test.shape)
+X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+print(X_train.shape, Y_train.shape)
+print(X_test.shape, Y_test.shape)
 
 batch_size = 32
 model = createmodel()
-model.fit(X_train, Y_train, epochs =10, batch_size=batch_size, verbose = 2)
-score,acc = model.evaluate(X_test,Y_test,verbose=2,batch_size=batch_size)
+model.fit(X_train, Y_train, epochs=10, batch_size=batch_size, verbose=2)
+score, acc = model.evaluate(X_test, Y_test, verbose=2, batch_size=batch_size)
 print(score)
 print(acc)

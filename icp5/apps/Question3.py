@@ -14,9 +14,7 @@ import re
 
 from sklearn.preprocessing import LabelEncoder
 
-
 data = pd.read_csv('Sentiment.csv')
-# Keeping only the neccessary columns
 data = data[['text', 'sentiment']]
 data = data[data.sentiment != 'Neutral']
 
@@ -50,8 +48,6 @@ def createmodel():
     return model
 
 
-# print(model.summary())
-
 labelencoder = LabelEncoder()
 integer_encoded = labelencoder.fit_transform(data['sentiment'])
 y = to_categorical(integer_encoded)
@@ -67,7 +63,7 @@ from sklearn.model_selection import GridSearchCV
 
 grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=1)
 
-# tensorboard = TensorBoard(log_dir="logs/{}",histogram_freq=0, write_graph=True, write_images=True)
+tensorboard = TensorBoard(log_dir="/tmp",histogram_freq=0, write_graph=True, write_images=True)
 # model.fit(X_train, y_train, nb_epoch=epochs, batch_size=32,callbacks=[tensorboard])
 
 grid_result = grid.fit(X_train, Y_train)
