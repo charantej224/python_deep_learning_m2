@@ -1,36 +1,25 @@
 from keras.layers import Input, Dense
 from keras.models import Model
-from keras import regularizers
-from keras.callbacks import TensorBoard
 
 # this is the size of our encoded representations
-encoding_dim = 32
+encoding_dim = 64
 # 32 floats -> compression of factor 24.5, assuming the input is 784 floats
 
 # this is our input placeholder
 input_img = Input(shape=(784,))
 
 # "encoded" is the encoded representation of the input
-encoded = Dense(encoding_dim, activation='relu')(input_img)
-# encoded = Dense(encoding_dim, activation='relu',
-# activity_regularizer=regularizers.l1(10e-5))(input_img)
-encoded1 = Dense(encoding_dim, activation='relu')(encoded)
-# "decoded" is the lossy reconstruction of the input
+encoded = Dense(encoding_dim, kernel_initializer='random_uniform', activation='relu')(input_img)
+encoded1 = Dense(encoding_dim, kernel_initializer='random_uniform', activation='relu')(encoded)
 decoded = Dense(784, activation='sigmoid')(encoded1)
 
 # this model maps an input to its reconstruction
 autoencoder = Model(input_img, decoded)
 
-# seperate encoder model
-# this model maps an input to its encoded representation
 encoder = Model(input_img, encoded)
 
-# let's create a seperate decoder model
-# create a placeholder for an encoded (32-dimensional) input
 encoded_input = Input(shape=(encoding_dim,))
-# retrieve the last layer of the autoencoder model
 decoder_layer = autoencoder.layers[-1]
-# create the decoder model
 decoder = Model(encoded_input, decoder_layer(encoded_input))
 
 autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
@@ -43,23 +32,21 @@ x_train = x_train.astype('float32') / 255.
 x_test = x_test.astype('float32') / 255.
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
 x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
-tensorboard = TensorBoard(write_graph=True, log_dir="log/2", histogram_freq=0)
 autoencoder.fit(x_train, x_train,
                 epochs=10,
                 batch_size=256,
                 shuffle=True,
-                validation_data=(x_test, x_test), callbacks=[tensorboard])
+                validation_data=(x_test, x_test))
 
 # encode and decode some digits
 # note that we take them from the *test* set
 encoded_imgs = encoder.predict(x_test)
 decoded_imgs = decoder.predict(encoded_imgs)
 
-# use Matplotlib
 import matplotlib.pyplot as plt
 
 # displaying original and reconstructed image
-n = 10  # how many digits we will display
+n = 4  # how many digits we will display
 plt.figure(figsize=(20, 4))
 for i in range(n):
     # display original

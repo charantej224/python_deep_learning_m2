@@ -60,7 +60,23 @@ print(X_test.shape, Y_test.shape)
 
 batch_size = 32
 model = createmodel()
-model.fit(X_train, Y_train, epochs=10, batch_size=batch_size, verbose=2)
+model.fit(X_train, Y_train, epochs=5, batch_size=batch_size, verbose=2)
 score, acc = model.evaluate(X_test, Y_test, verbose=2, batch_size=batch_size)
 print(score)
 print(acc)
+
+
+def predict(input_sentence):
+    tokenizer.fit_on_texts(input_sentence)
+    X = tokenizer.texts_to_sequences(input_sentence)
+    X = pad_sequences(X, maxlen=28)
+    sentiment = model.predict(X, batch_size=1, verbose=2)[0]
+    print(sentiment)
+
+
+while True:
+    str_input = input("Enter text for sentiment analysis")
+    if str_input.lower() != "exit":
+        predict(str_input)
+    else:
+        break
