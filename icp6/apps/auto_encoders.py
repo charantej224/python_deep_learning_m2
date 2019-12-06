@@ -1,7 +1,7 @@
 from keras.layers import Input, Dense
 from keras.models import Model
 
-encoding_dim = 32
+encoding_dim = 64
 
 input_img = Input(shape=(784,))
 
@@ -25,7 +25,7 @@ x_test = x_test.astype('float32') / 255.
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
 x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 autoencoder.fit(x_train, x_train,
-                epochs=20,
+                epochs=5,
                 batch_size=256,
                 shuffle=True,
                 validation_data=(x_test, x_test))

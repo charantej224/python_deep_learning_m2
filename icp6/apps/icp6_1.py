@@ -1,11 +1,7 @@
 from keras.layers import Input, Dense
 from keras.models import Model
 
-# this is the size of our encoded representations
 encoding_dim = 64
-# 32 floats -> compression of factor 24.5, assuming the input is 784 floats
-
-# this is our input placeholder
 input_img = Input(shape=(784,))
 
 # "encoded" is the encoded representation of the input
@@ -33,20 +29,17 @@ x_test = x_test.astype('float32') / 255.
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
 x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 autoencoder.fit(x_train, x_train,
-                epochs=10,
+                epochs=5,
                 batch_size=256,
                 shuffle=True,
                 validation_data=(x_test, x_test))
 
-# encode and decode some digits
-# note that we take them from the *test* set
 encoded_imgs = encoder.predict(x_test)
 decoded_imgs = decoder.predict(encoded_imgs)
 
 import matplotlib.pyplot as plt
 
-# displaying original and reconstructed image
-n = 4  # how many digits we will display
+n = 4
 plt.figure(figsize=(20, 4))
 for i in range(n):
     # display original

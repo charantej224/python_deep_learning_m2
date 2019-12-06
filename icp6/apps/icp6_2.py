@@ -19,7 +19,7 @@ x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 
 (x_train.shape, x_test.shape)
 input_dim = x_train.shape[1]
-encoding_dim = 32
+encoding_dim = 64
 
 compression_factor = float(input_dim) / encoding_dim
 print("Compression factor: %s" % compression_factor)
@@ -44,7 +44,7 @@ history = autoencoder.fit(x_train, x_train,
                           batch_size=256,
                           shuffle=True,
                           validation_data=(x_test, x_test))
-num_images = 10
+num_images = 5
 np.random.seed(42)
 random_test_images = np.random.randint(x_test.shape[0], size=num_images)
 
