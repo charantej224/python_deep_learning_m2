@@ -48,8 +48,10 @@ num_images = 5
 np.random.seed(42)
 random_test_images = np.random.randint(x_test.shape[0], size=num_images)
 
-encoded_imgs = encoder.predict(x_test)
-decoded_imgs = autoencoder.predict(x_test)
+noise = np.random.normal(loc=0.1, scale=0.1, size=x_test.shape)
+
+encoded_imgs = encoder.predict(x_test + noise)
+decoded_imgs = autoencoder.predict(x_test + noise)
 
 plt.figure(figsize=(18, 4))
 
@@ -57,13 +59,6 @@ for i, image_idx in enumerate(random_test_images):
     # plot original image
     ax = plt.subplot(3, num_images, i + 1)
     plt.imshow(x_test[image_idx].reshape(28, 28))
-    plt.gray()
-    ax.get_xaxis().set_visible(False)
-    ax.get_yaxis().set_visible(False)
-
-    # plot encoded image
-    ax = plt.subplot(3, num_images, num_images + i + 1)
-    plt.imshow(encoded_imgs[image_idx].reshape(8, 4))
     plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
